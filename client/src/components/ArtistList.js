@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 class ArtistList extends Component {
   constructor(){
     super();
     this.state = {
+      error: '',
       artists: []
     }
   }
@@ -13,16 +16,30 @@ class ArtistList extends Component {
   }
 
   _fetchArtists = async () => {
-    const res = await axios.get('/api/artists');
-    await this.setState({artists: res.data});
-    return res.data;
+    try {
+      const res = await axios.get('/api/artists');
+      if (res.headers['access-token']){
+        localStorage.setItem("access-token", res.headers['access-token'])
+        axios.defaults.headers['access-token'] = localStorage.getItem("access-token"); 
+      }
+      await this.setState({artists: res.data});
+      return res.data;
+    }
+    catch (err) {
+      console.log(err)
+      this.setState({error: err.message})
+    }
+    
   }
 
   render() {
+    if (this.state.error){
+      return <div>{this.state.error}</div>
+    }
     return (
       <div>
         {this.state.artists.map(artist => (
-          <h1>{artist.name}</h1>
+          <Link to={`/artist/${artist.id}`} >{artist.name}</Link>
         ))}
       </div>
     );
