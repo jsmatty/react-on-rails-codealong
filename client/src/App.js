@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { setAxiosDefaults } from './utils';
-import ArtistList from './components/ArtistList'
+import ArtistList from './components/ArtistList';
 import Artist from './components/Artist';
 import SignUp from './components/SignUp';
 import './App.css';
 
 
 class App extends Component {
-  componentWillMount(){
+  componentWillMount() {
     setAxiosDefaults();
   }
-  
+
   render() {
     return (
       <Router>
