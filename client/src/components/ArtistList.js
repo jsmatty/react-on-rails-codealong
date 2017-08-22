@@ -18,10 +18,6 @@ class ArtistList extends Component {
   _fetchArtists = async () => {
     try {
       const res = await axios.get('/api/artists');
-      if (res.headers['access-token']){
-        localStorage.setItem("access-token", res.headers['access-token'])
-        axios.defaults.headers['access-token'] = localStorage.getItem("access-token"); 
-      }
       await this.setState({artists: res.data});
       return res.data;
     }

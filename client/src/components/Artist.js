@@ -14,11 +14,6 @@ class Artist extends Component {
     const artistId = this.props.match.params.id;
     axios.get(`/api/artists/${artistId}/songs`).then(res => {
       console.log(res.data)
-      console.log(res.headers);
-      if (res.headers['access-token']){
-        localStorage.setItem("access-token", res.headers['access-token'])
-        axios.defaults.headers['access-token'] = localStorage.getItem("access-token"); 
-      }
       this.setState({artist: res.data.artist, songs: res.data.songs})
     });
     
