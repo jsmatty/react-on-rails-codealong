@@ -12,11 +12,20 @@ class Artist extends Component {
 
   componentWillMount() {
     const artistId = this.props.match.params.id;
-    axios.get(`/api/artists/${artistId}/songs`).then((res) => {
-      console.log(res.data);
-      this.setState({ artist: res.data.artist, songs: res.data.songs });
-    });
+    this._fetchArtists(artistId)
   }
+
+  _fetchArtists = async (artistId) => {
+    try {
+      const response = await axios.get(`/api/artists/${artistId}/songs`)
+      await this.setState({artist: response.data.artist, songs: response.data.songs});
+      return response.data;
+    }
+    catch (err) {
+      await this.setState({error: err.message})
+      return err.message
+    }
+  } 
 
   render() {
     return (
@@ -26,6 +35,7 @@ class Artist extends Component {
         {this.state.songs.map(song => (
           <div key={song.id}>
             <h4>{song.title}</h4>
+            <audio controls src={song.preview_url}></audio>
           </div>
         ))}
       </div>
